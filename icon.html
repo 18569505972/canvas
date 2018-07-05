@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>三次贝塞尔曲线绘制熊掌图标</title>
+</head>
+
+<body>
+    <canvas id="icon"></canvas>
+    <script type="text/javascript">
+    const canvas = document.getElementById('icon');
+    canvas.width = 1000;
+    canvas.height = 400;
+    const context = canvas.getContext('2d');
+    //阴影文字
+    context.shadowOffsetX = 5;
+    context.shadowOffsetY = 5;
+    context.shadowBlur = 5;
+    context.shadowColor = '#F00';
+    context.font = '30px SimHei';
+    context.textAlign = 'left';
+    context.strokeStyle = 'black'
+    context.strokeText('三次贝塞尔曲线绘制熊掌图标', 200, 40);
+    context.direction = 'rtl';
+    //椭圆1
+    context.beginPath();
+    context.moveTo(39.5, 91.5);
+    context.bezierCurveTo(46, 104.5, 35.5, 79, 46.5, 63.5);
+    context.bezierCurveTo(39, 67, 55.5, 60.5, 70, 80.5);
+    context.bezierCurveTo(66.5, 67.5, 75, 92, 65, 108.5);
+    context.bezierCurveTo(73, 104.5, 55, 111.5, 39.5, 91.5);
+    context.fillStyle = '#3975bf';
+    context.fill();
+    //椭圆2
+    context.beginPath();
+    context.moveTo(68, 53);
+    context.bezierCurveTo(71, 66.5, 66.5, 39, 81.5, 24);
+    context.bezierCurveTo(71.5, 25.5, 90.5, 21.5, 101, 47.5);
+    context.bezierCurveTo(99, 32, 103, 62.5, 88.5, 78);
+    context.bezierCurveTo(98.5, 75, 80.5, 78.5, 68, 53);
+    context.fillStyle = '#3975bf';
+    context.fill();
+    //椭圆3
+    context.beginPath();
+    context.moveTo(110.5, 48);
+    context.bezierCurveTo(106, 61.5, 114, 33, 134, 26.5);
+    context.bezierCurveTo(124.5, 24, 141.5, 30, 142.5, 55.5);
+    context.bezierCurveTo(146.5, 43, 137.5, 70.5, 119, 78.5);
+    context.bezierCurveTo(127.5, 81.5, 110, 75, 110.5, 48);
+    context.fillStyle = '#3975bf';
+    context.fill();
+    //椭圆4
+    context.beginPath();
+    context.moveTo(136.5, 88);
+    context.bezierCurveTo(129.5, 100, 141.5, 76.5, 160, 73);
+    context.bezierCurveTo(151.5, 69, 168, 77.5, 166.5, 101.5);
+    context.bezierCurveTo(170.5, 89, 160.5, 113.5, 141.5, 117.5);
+    context.bezierCurveTo(149.5, 120.5, 133, 113, 136.5, 88);
+    context.fillStyle = '#3975bf';
+    context.fill();
+    //掌心
+    context.beginPath();
+    context.moveTo(103.5, 91.5);
+    context.bezierCurveTo(83.5, 91.5, 123, 93.5, 140.5, 148);
+    context.bezierCurveTo(151, 137.5, 125.5, 166, 103, 150);
+    context.bezierCurveTo(114.5, 149, 91.5, 152.5, 60, 150);
+    context.bezierCurveTo(71, 161, 50, 137.5, 103.5, 91.5);
+    context.fillStyle = '#3975bf';
+    context.fill();
+    </script>
+</body>
+
+</html>

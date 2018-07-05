@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>canvas基础api运用</title>
+</head>
+
+<body>
+    <canvas id="canvas0" height="100" width="400" style="display: block;margin:0 auto;"></canvas>
+    <br>
+    <canvas id="canvas1" height="220" width="230"></canvas>
+    <canvas id="canvas2" height="300" width="330"></canvas>
+    <canvas id="canvas3" height="315" width="330"></canvas>
+    <canvas id="canvas4" height="300" width="460"></canvas>
+    <br>
+    <canvas id="canvas5" height="300" width="300"></canvas>
+    <canvas id="canvas6" height="300" width="300"></canvas>
+    <canvas id="canvas7" height="300" width="350"></canvas>
+    <canvas id="canvas8" height="300" width="300"></canvas>
+    <br>
+    <canvas id="canvas9" height="300" width="900"></canvas>
+    <script type="text/javascript">
+    const canvas1 = document.getElementById('canvas1');
+    const canvas2 = document.getElementById('canvas2');
+    const canvas3 = document.getElementById('canvas3');
+    const canvas4 = document.getElementById('canvas4');
+    const canvas5 = document.getElementById('canvas5');
+    const canvas6 = document.getElementById('canvas6');
+    const canvas7 = document.getElementById('canvas7');
+    const canvas8 = document.getElementById('canvas8');
+    const canvas9 = document.getElementById('canvas9');
+    const canvas0 = document.getElementById('canvas0');
+    const context1 = canvas1.getContext('2d');
+    const context2 = canvas2.getContext('2d');
+    const context3 = canvas3.getContext('2d');
+    const context4 = canvas4.getContext('2d');
+    const context5 = canvas5.getContext('2d');
+    const context6 = canvas6.getContext('2d');
+    const context7 = canvas7.getContext('2d');
+    const context8 = canvas8.getContext('2d');
+    const context9 = canvas9.getContext('2d');
+    const context0 = canvas0.getContext('2d');
+    //阴影文字
+    context0.shadowOffsetX = 5;
+    context0.shadowOffsetY = 5;
+    context0.shadowBlur = 5;
+    context0.shadowColor = '#F00';
+    context0.font = '30px SimHei';
+    context0.fillStyle='black'
+    context0.fillText('canvas基本api的使用', 50, 40)
+    //矩形相切
+    context1.fillRect(0, 0, 100, 100); //填充
+    context1.strokeRect(120, 0, 100, 100); //边框
+    context1.fillStyle = 'pink'; //填充颜色
+    context1.strokeStyle = 'darkred'; //边框颜色
+    context1.fillRect(0, 120, 100, 100); //填充
+    context1.strokeRect(120, 120, 100, 100); //边框
+    context1.clearRect(50, 50, 120, 120); //清除区域
+    //实心圆三原色
+    context2.beginPath(); //路径起点
+    context2.arc(100, 100, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context2.closePath(); //路径终点
+    context2.fillStyle = 'red'; //圆填充色
+    context2.fill();
+    context2.beginPath(); //路径起点
+    context2.arc(220, 100, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context2.closePath(); //路径终点
+    context2.fillStyle = 'blue'; //圆填充色
+    context2.globalCompositeOperation = 'lighter' //交集颜色叠加
+    context2.fill();
+    context2.save();
+    context2.beginPath(); //路径起点
+    context2.arc(175, 200, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context2.closePath(); //路径终点
+    context2.fillStyle = 'yellow'; //圆填充色
+    //context2.globalCompositeOperation = 'lighter' //交集颜色叠加
+    context2.fill();
+    context2.restore();
+    //空心圆三原色
+    context3.beginPath(); //路径起点
+    context3.lineWidth = '5';
+    context3.arc(105, 105, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context3.closePath(); //路径终点
+    context3.strokeStyle = 'red'; //圆边框色
+    context3.stroke();
+    context3.beginPath(); //路径起点
+    context3.arc(225, 105, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context3.closePath(); //路径终点
+    context3.strokeStyle = 'blue'; //圆边框色
+    context3.stroke();
+    context3.beginPath(); //路径起点
+    context3.beginPath(); //路径起点
+    context3.arc(180, 205, 100, 0, Math.PI * 2, true); //逆时针绘制圆
+    context3.closePath(); //路径终点
+    context3.strokeStyle = 'yellow'; //圆边框色
+    context3.stroke();
+    //半圆
+    context4.beginPath(); //路径起点
+    context4.arc(100, 100, 100, 0, Math.PI, true); //逆时针绘制圆
+    //context4.closePath(); //路径终点
+    context4.strokeStyle = 'red'; //圆边框色
+    context4.stroke();
+    //context4.beginPath(); //路径起点
+    context4.arc(350, 100, 100, 0, Math.PI, true); //逆时针绘制圆
+    context4.strokeStyle = 'red'; //圆边框色
+    var img = new Image();
+    img.src = 'man.png';
+    img.onload = function() {
+        var backImg = context4.createPattern(this, 'repeat');
+        context4.fillStyle = backImg;
+        context4.fill();
+    }
+    context4.stroke();
+    //六边形
+    var dx6 = 150; //中心点x坐标
+    var dy6 = 150; //中心点y坐标
+    context6.strokeStyle = 'red';
+    for (var m = 0; m < 8; m++) {
+        context6.beginPath();
+        var s6 = 100 - 100 * m / 8; //半径
+        for (var n = 0; n < 6; n++) {
+            context6.lineTo(dx6 + s6 * Math.cos(Math.PI / 3 * n), dy6 + s6 * Math.sin(Math.PI / 3 * n))
+        }
+        context6.closePath();
+        context6.stroke();
+    }
+    //30边形
+    var dx = 150;
+    var dy = 150;
+    var s = 100;
+    context5.beginPath();
+    context5.fillStyle = 'pink';
+    context5.strokeStyle = 'rgb(0,0,100)';
+    var x = Math.sin(0);
+    var y = Math.cos(0);
+    var dig = Math.PI / 15 * 7;
+    for (var i = 0; i < 30; i++) {
+        var x = Math.sin(i * dig);
+        var y = Math.cos(i * dig);
+        context5.lineTo(dx + x * s, dy + y * s);
+        console.log(x, y)
+    }
+    context5.closePath();
+    context5.fill();
+    context5.stroke();
+    //线性渐变
+    var linear = context7.createLinearGradient(0, 0, 300, 300);
+    linear.addColorStop(0, '#F00');
+    linear.addColorStop(0.5, '#0F0');
+    linear.addColorStop(1, '#00F');
+    context7.fillStyle = linear;
+    context7.fillRect(0, 0, 400, 300);
+    //径向渐变
+    var radial = context8.createRadialGradient(0, 0, 0, 300, 300, 100);
+    radial.addColorStop(0, '#F00');
+    radial.addColorStop(0.5, '#0F0');
+    radial.addColorStop(1, '#A0F');
+    context8.fillStyle = radial;
+    context8.fillRect(0, 0, 400, 300);
+    //三角形
+    context9.beginPath();
+    context9.moveTo(0, 0);
+    context9.lineTo(100, 100);
+    context9.lineTo(0, 200);
+    context9.fillStyle = 'rgba(0,0,0,0.5)';
+    context9.fill();
+    //笑脸
+    context9.beginPath();
+    context9.arc(220, 100, 100, 0, Math.PI * 2, true); //脸
+    context9.moveTo(170, 100);
+    context9.arc(220, 100, 50, 0, Math.PI, false); //嘴
+    context9.moveTo(180, 50);
+    context9.arc(170, 50, 10, 0, Math.PI * 2, true); //左眼
+    context9.moveTo(280, 50);
+    context9.arc(270, 50, 10, 0, Math.PI * 2, true); //左眼
+    context9.strokeStyle = 'rgb(0,0,100)';
+    context9.stroke();
+    //二次贝塞尔曲线绘制提示气泡
+    context9.beginPath();
+    context9.moveTo(470, 50);
+    context9.quadraticCurveTo(420, 50, 420, 75);
+    context9.quadraticCurveTo(420, 90, 430, 100); //气泡尾巴起始点
+    context9.quadraticCurveTo(430, 110, 430, 130); //气泡尾巴起顶点
+    context9.quadraticCurveTo(430, 130, 440, 100); //气泡尾巴起终点
+    context9.quadraticCurveTo(470, 100, 470, 100);
+    context9.quadraticCurveTo(520, 100, 520, 75);
+    context9.quadraticCurveTo(520, 50, 470, 50);
+    context9.stroke();
+    context9.beginPath();
+    context9.moveTo(475, 75);
+    context9.arc(470, 75, 5, 0, Math.PI * 2, true);
+    context9.moveTo(455, 75);
+    context9.arc(450, 75, 5, 0, Math.PI * 2, true);
+    context9.moveTo(495, 75);
+    context9.arc(490, 75, 5, 0, Math.PI * 2, true);
+    context9.fillStyle = 'rgba(0,0,0,0.5)';
+    context9.fill();
+    context9.stroke();
+    </script>
+</body>
+
+</html>
