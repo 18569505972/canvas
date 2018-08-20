@@ -16,16 +16,16 @@
         width: 100%;
         position: relative;
     }
-    
-    p{
-        width:100px;
-        height:50px;
+
+    p {
+        width: 100px;
+        height: 50px;
         background-color: #EE9922;
-        color:#fff;
+        color: #fff;
         line-height: 50px;
         margin-left: 20px;
         text-align: center;
-        display:inline-block;
+        display: inline-block;
         border-radius: 20%;
         cursor: pointer;
     }
@@ -40,152 +40,61 @@
         z-index: 5;
     }
 
-    .lunck_draw_wrap .turnplate canvas#wheelcanvas0 {
+    .lunck_draw_wrap .turnplate canvas#bgImg {
         z-index: 1;
     }
 
-    .lunck_draw_wrap .turnplate canvas#wheelcanvas1 {
+    .lunck_draw_wrap .turnplate canvas#point {
         z-index: 6;
     }
     </style>
 </head>
 
 <body>
-	<p onclick="beginRotate()">旋转</p>
+    <p onclick="beginRotate()">旋转</p>
     <p onclick="stopRotate('60')">暂停</p>
     <div class="lunck_draw_wrap">
         <div class="turnplate" style=" background-size:100%100%;">
-            <canvas class="item" id="wheelcanvas1" width="422px" height="422px">
+            <canvas class="item" id="point" width="422px" height="422px">
             </canvas>
             <canvas class="item" id="wheelcanvas" width="422px" height="422px">
             </canvas>
-            <canvas class="item" id="wheelcanvas0" width="422px" height="422px">
+            <canvas class="item" id="bgImg" width="422px" height="422px">
             </canvas>
         </div>
     </div>
+    <script type="text/javascript" src="turntable.js"></script>
     <script type="text/javascript">
-    //转盘绘制参数
+    //转盘绘制参数初始化
     var turnplate = {
-        restaraunts:['幸运奖', '未中奖', '奖品1', '奖品2', '奖品3', '奖品4'],  //奖品内容
+        restaraunts: ['幸运奖', '未中奖', '奖品1', '奖品2', '奖品3', '奖品4'], //奖品内容
         colors: ['#fefccf', '#fefccf', '#fefccf', '#fefccf', '#fefccf', '#fefccf'], //大转盘奖品区块对应背景颜色
         goodsimgArr: ['./1000.png', './33.png', './350.png', './500.png', './red.png', './heart.png'], //奖品图片页面标签
-        bgImg:['./bg_pandel.png'], //大转盘背景
+        bgImgid: "bgImg", //大转盘背景id
+        bgImg: ['./bg_pandel.png'], //大转盘背景
         textRadius: 160, //大转盘奖品位置距离圆心的距离
         insideRadius: 65, //大转盘内圆的半径
         startAngle: 0, //开始角度
+        id: "wheelcanvas", //转盘canvasid
+        pointid: "point", //转盘指针id
+        pointImg: "./point.png", //转盘指针地址
+        deg: 1 //每次转动角度
     };
-    var canvas = document.getElementById("wheelcanvas");
-    // 渲染大转盘
-    function drawRouletteWheel() {
-        if (canvas.getContext) {
-            //根据奖品个数计算圆周角度
-            var arc = Math.PI / (turnplate.restaraunts.length / 2);
-            var ctx = canvas.getContext("2d");
-            //在给定矩形内清空一个矩形
-            ctx.clearRect(0, 0, 422, 422);
-            //strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
-            ctx.strokeStyle = "rgba(0,0,0,0)";
-            //font 属性设置或返回画布上文本内容的当前字体属性
-            for (var i = 0; i < turnplate.restaraunts.length; i++) {
-                //根据当前奖品索引 计算绘制的扇形开始弧度
-                var angle = turnplate.startAngle + i * arc;
-                //根据奖品参数 绘制扇形填充颜色
-                ctx.fillStyle = turnplate.colors[i];
-                //开始绘制扇形
-                ctx.beginPath();
-                //arc(x,y,r,起始角,结束角,绘制方向) 方法创建弧/曲线（用于创建圆或部分圆）
-                //绘制大圆
-                ctx.arc(212, 212, turnplate.textRadius, angle+Math.PI/72, angle + arc-Math.PI/72, false);
-                //绘制小圆
-                ctx.arc(212, 212, turnplate.insideRadius, angle + arc-Math.PI/72, angle+Math.PI/72, true);
-                ctx.stroke();
-                ctx.fill();
-                //锁画布(为了保存之前的画布状态)
-                ctx.save();
-                //----绘制奖品开始----
-                //translate方法重新映射画布上的 (0,0) 位置
-                ctx.translate(212 + Math.cos(angle + arc / 2) * turnplate.textRadius, 212 + Math.sin(angle + arc / 2) * turnplate.textRadius);
-                //rotate方法旋转当前的绘图
-                ctx.rotate(angle + arc / 2 + Math.PI / 2);
-                //绘制奖品图片
-                var img = new Image();
-                img.src = turnplate.goodsimgArr[i];
-                ctx.drawImage(img, -50, 10, 100, 70);
-                //把当前画布返回（插入）到上一个save()状态之前
-                ctx.restore();
-                ctx.save();
-                //----绘制奖品结束----
-            }
-        }
-    }
-    //对奖品图片预加载
-    function preloadimages(arr) {
-        var newimages = [],
-            loadedimages = 0
-        var postaction = function() {} //此处增加了一个postaction函数
-        var arr = (typeof arr != "object") ? [arr] : arr
 
-        function imageloadpost() {
-            loadedimages++
-            if (loadedimages == arr.length) {
-                postaction(newimages) //加载完成用我们调用postaction函数并将newimages数组做为参数传递进去
-            }
-        }
-        for (var i = 0; i < arr.length; i++) {
-            newimages[i] = new Image()
-            newimages[i].src = arr[i]
-            newimages[i].onload = function() {
-                imageloadpost()
-            }
-            newimages[i].onerror = function() {
-                imageloadpost()
-            }
-        }
-        return { //此处返回一个空白对象的done方法
-            done: function(f) {
-                postaction = f || postaction
-            }
-        }
-    }
-    preloadimages(turnplate.goodsimgArr).done(function(images) {
-        drawRouletteWheel();
-    })
-    // 渲染背景
-    var canvas0 = document.getElementById("wheelcanvas0");
-    var ctx0 = canvas0.getContext("2d");
-    ctx0.rect(0, 0, 422, 422);
-    var img = new Image();
-    img.src = turnplate.bgImg[0];
-    img.width ='100%'
-    img.onload=function(){
-         ctx0.drawImage(this, 0, 0, 422, 422);
-    }
-    // 渲染转盘指针
-    var canvas1 = document.getElementById("wheelcanvas1");
-    var ctx1 = canvas1.getContext("2d");
-    ctx1.rect(0, 0, 422, 422);
-    var img1 = new Image();
-    img1.src = './point.png';
-    img1.onload=function(){
-         ctx1.drawImage(this, 161, 161, 100, 100);
-    }
-    // 转盘控制部分
-    var deg=1;
+    //大转盘初始化
+    var turn = new turntables();
+    var canvas = turn.drawfinish(turnplate)
+    //定时器初始化
     var timer;
     // 开始转动
-    function beginRotate(){
-      clearInterval(timer)
-      timer=setInterval(function(){
-        canvas0.style.transform = 'rotate('+Math.PI*2*deg+'deg)';
-        canvas.style.transform = 'rotate('+Math.PI*2*deg+'deg)';
-        deg++
-      },10)
+    function beginRotate() {
+        clearInterval(timer)
+        timer = turn.beginRotate()
     }
     // 停止转动
-    function stopRotate(stopdeg){
-      canvas0.style.transform = 'rotate(-'+stopdeg+'deg)';
-      canvas.style.transform = 'rotate(-'+stopdeg+'deg)';
-      clearInterval(timer)
+    function stopRotate(stopdeg) {
+        clearInterval(timer)
+        turn.stopRotate(stopdeg)
     }
     </script>
 </body>
