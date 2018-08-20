@@ -1,5 +1,4 @@
 function turntables() {
-
 }
 turntables.prototype = {
     //对奖品图片预加载
